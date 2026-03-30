@@ -25,10 +25,11 @@ import {
 import { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-);
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabase = supabaseUrl && supabaseKey
+  ? createClient(supabaseUrl, supabaseKey)
+  : null;
 
 export default function Home() {
   const [formData, setFormData] = useState({
@@ -92,6 +93,12 @@ export default function Home() {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitMessage('');
+
+    if (!supabase) {
+      setSubmitMessage('Form temporarily unavailable. Please email us directly at sumit@finesseaccounts.com');
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       const { error } = await supabase.from('contact_submissions').insert([
