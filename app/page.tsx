@@ -206,7 +206,7 @@ Message: ${formData.message}`;
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { step: '01', title: 'Connect', desc: "Share your client's QuickBooks or Xero access securely" },
+              { step: '01', title: 'Connect', desc: "Share your client&apos;s QuickBooks or Xero access securely" },
               { step: '02', title: 'We Work Overnight', desc: 'Reconciliations, categorization, and reporting done while you sleep' },
               { step: '03', title: 'Review & Approve', desc: 'You review the clean financials under your brand' },
               { step: '04', title: 'Deliver to Client', desc: "Your client receives professional reports — they never know we exist" },
@@ -254,7 +254,7 @@ Message: ${formData.message}`;
         <div className="max-w-3xl mx-auto text-center">
           <FileText className="w-12 h-12 text-emerald-600 dark:text-emerald-400 mx-auto mb-4" />
           <h2 className="text-3xl font-bold mb-4 text-slate-900 dark:text-white">See the Quality of Our Work</h2>
-          <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">We prepared a sample management report for a US restaurant client — the same quality your CPA firm's clients will receive.</p>
+          <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">We prepared a sample management report for a US restaurant client — the same quality your CPA firm&apos;s clients will receive.</p>
           <Button size="lg" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="bg-emerald-600 hover:bg-emerald-700 text-white border-0 text-lg px-8 py-6 group">
             Request Sample Report
             <ChevronRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -321,7 +321,7 @@ Message: ${formData.message}`;
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-emerald-600 to-emerald-700">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl sm:text-5xl font-bold mb-6 text-white">Ready to Simplify Your Accounting?</h2>
-          <p className="text-lg text-emerald-50 mb-8 leading-relaxed">Let's discuss how Finesse Accounts can help your firm stay ahead — clean books, delivered overnight, under your brand.</p>
+          <p className="text-lg text-emerald-50 mb-8 leading-relaxed">Let&apos;s discuss how Finesse Accounts can help your firm stay ahead — clean books, delivered overnight, under your brand.</p>
           <Button size="lg" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="bg-white text-emerald-600 hover:bg-emerald-50 border-0 text-lg px-8 py-6 group">
             Get in Touch
             <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -333,7 +333,7 @@ Message: ${formData.message}`;
       <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4 text-slate-900 dark:text-white">Let's Work Together</h2>
+            <h2 className="text-4xl font-bold mb-4 text-slate-900 dark:text-white">Let&apos;s Work Together</h2>
             <p className="text-lg text-slate-600 dark:text-slate-400">Tell us about your firm and we'll get back to you within 24 hours.</p>
           </div>
           <Card className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
