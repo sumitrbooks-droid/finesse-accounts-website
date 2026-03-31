@@ -99,7 +99,7 @@ export default function Home() {
           Message: formData.message || 'N/A',
           user_type: formData.client_type || 'N/A',
           service: formData.service_interest || 'N/A'
-       },
+        },
       ]);
 
       if (error) throw error;
@@ -118,9 +118,6 @@ export default function Home() {
       setTimeout(() => setSubmitSuccess(false), 5000);
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : 'Failed to submit form');
-    } finally {
-      setIsSubmitting(false);
-    }
     } finally {
       setIsSubmitting(false);
     }
@@ -368,7 +365,7 @@ export default function Home() {
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4 text-slate-900 dark:text-white">Let&apos;s Work Together</h2>
-            <p className="text-lg text-slate-600 dark:text-slate-400">Tell us about your firm and we'll get back to you within 24 hours.</p>
+            <p className="text-lg text-slate-600 dark:text-slate-400">Tell us about your firm and we&apos;ll get back to you within 24 hours.</p>
           </div>
           <Card className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
             <CardContent className="p-8">
