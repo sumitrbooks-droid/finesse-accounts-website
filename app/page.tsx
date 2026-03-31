@@ -94,9 +94,12 @@ export default function Home() {
         {
           full_name: formData.name,
           email: formData.email,
-          company: formData.business_name || null,
-          Message: formData.message || null,
-        },
+          phone: formData.phone || 'N/A',
+          company: formData.business_name || 'N/A',
+          Message: formData.message || 'N/A',
+          user_type: formData.client_type || 'N/A',
+          service: formData.service_interest || 'N/A'
+       },
       ]);
 
       if (error) throw error;
