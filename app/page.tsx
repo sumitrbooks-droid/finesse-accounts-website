@@ -90,15 +90,12 @@ export default function Home() {
     setSubmitSuccess(false);
 
     try {
-      const { error } = await supabase.from('leads').insert([
+      const { error } = await supabase.from('Leads').insert([
         {
-          name: formData.name,
+          full_name: formData.name,
           email: formData.email,
-          phone: formData.phone || null,
-          business_name: formData.business_name || null,
-          client_type: formData.client_type || null,
-          service_interest: formData.service_interest || null,
-          message: formData.message || null,
+          company: formData.business_name || null,
+          Message: formData.message || null,
         },
       ]);
 
@@ -118,6 +115,9 @@ export default function Home() {
       setTimeout(() => setSubmitSuccess(false), 5000);
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : 'Failed to submit form');
+    } finally {
+      setIsSubmitting(false);
+    }
     } finally {
       setIsSubmitting(false);
     }
