@@ -22,6 +22,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { useState } from 'react';
+import { supabase } from '@/lib/supabase';
 
 export default function Home() {
   const [formData, setFormData] = useState({
@@ -33,6 +34,9 @@ export default function Home() {
     client_type: '',
     message: '',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const bookkeepingServices = [
     {
@@ -79,17 +83,44 @@ export default function Home() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = `New Inquiry from ${formData.name} - ${formData.business_name}`;
-    const body = `Name: ${formData.name}
-Email: ${formData.email}
-Phone: ${formData.phone}
-Business: ${formData.business_name}
-Client Type: ${formData.client_type}
-Service Interest: ${formData.service_interest}
-Message: ${formData.message}`;
-    window.location.href = `mailto:sumit@finesseaccounts.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setIsSubmitting(true);
+    setSubmitError('');
+    setSubmitSuccess(false);
+
+    try {
+      const { error } = await supabase.from('leads').insert([
+        {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || null,
+          business_name: formData.business_name || null,
+          client_type: formData.client_type || null,
+          service_interest: formData.service_interest || null,
+          message: formData.message || null,
+        },
+      ]);
+
+      if (error) throw error;
+
+      setSubmitSuccess(true);
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        business_name: '',
+        service_interest: '',
+        client_type: '',
+        message: '',
+      });
+
+      setTimeout(() => setSubmitSuccess(false), 5000);
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : 'Failed to submit form');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -338,6 +369,16 @@ Message: ${formData.message}`;
           </div>
           <Card className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
             <CardContent className="p-8">
+              {submitSuccess && (
+                <div className="mb-6 p-4 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 rounded-lg text-emerald-700 dark:text-emerald-300 font-medium">
+                  Success! We&apos;ve received your inquiry and will get back to you within 24 hours.
+                </div>
+              )}
+              {submitError && (
+                <div className="mb-6 p-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-300 font-medium">
+                  Error: {submitError}
+                </div>
+              )}
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
@@ -386,8 +427,12 @@ Message: ${formData.message}`;
                   <label className="block text-sm font-medium text-slate-900 dark:text-white mb-2">Message</label>
                   <Textarea name="message" value={formData.message} onChange={handleInputChange} placeholder="Tell us about your firm and bookkeeping needs..." rows={5} className="w-full" />
                 </div>
-                <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white border-0 py-3 text-lg font-medium">
-                  Submit Inquiry
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-400 text-white border-0 py-3 text-lg font-medium transition-colors"
+                >
+                  {isSubmitting ? 'Submitting...' : 'Submit Inquiry'}
                 </Button>
                 <p className="text-xs text-slate-600 dark:text-slate-400 text-center">We respect your privacy. Your information is secure and will only be used to contact you about our services.</p>
               </form>
