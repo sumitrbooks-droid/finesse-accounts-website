@@ -1,7 +1,10 @@
-import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { NextResponse } from 'next/server';
 
+// This tells Next.js NOT to treat this as a pre-built page
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs'; 
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
@@ -12,11 +15,15 @@ export async function POST(req: Request) {
     const { data, error } = await resend.emails.send({
       from: 'Finesse Accounts <info@finesseaccounts.com>',
       to: ['info@finesseaccounts.com'],
-      subject: `New Inquiry from ${business_name || name}`,
-      html: `<p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Message:</strong> ${message}</p>`,
+      subject: `New Lead: ${business_name || name}`,
+      text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`, // Using plain text for safety
+      html: `<strong>Name:</strong> ${name}<br><strong>Message:</strong> ${message}`,
     });
 
-    if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+
     return NextResponse.json({ success: true, id: data?.id });
   } catch (err) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
