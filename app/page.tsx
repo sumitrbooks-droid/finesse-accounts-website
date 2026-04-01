@@ -88,16 +88,16 @@ export default function Home() {
     setSubmitSuccess(false);
 
     try {
-      // 1. Save to Supabase (Database)
-      const { error: dbError } = await supabase.from('Leads').insert([
+      // 1. Save to Supabase (Database) - FIXED TO MATCH YOUR BLUEPRINT
+      const { error: dbError } = await supabase.from('leads').insert([
         {
-          full_name: formData.name,
+          name: formData.name, // Fixed: removed 'full_name'
           email: formData.email,
           phone: formData.phone || 'N/A',
-          company: formData.business_name || 'N/A',
-          Message: formData.message || 'N/A',
-          user_type: formData.client_type || 'N/A',
-          service: formData.service_interest || 'N/A'
+          business_name: formData.business_name || 'N/A',
+          message: formData.message || 'N/A',
+          client_type: formData.client_type || 'N/A',
+          service_interest: formData.service_interest || 'N/A'
         },
       ]);
 
