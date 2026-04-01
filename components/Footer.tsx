@@ -1,5 +1,5 @@
 'use client';
-import { Scale, Linkedin, Mail } from 'lucide-react';
+import { Scale, Mail } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -50,27 +50,15 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold mb-4 text-white">Quick Links</h4>
+            <h4 className="font-semibold mb-4 text-white">Get in Touch</h4>
             <ul className="space-y-2">
               <li>
                 <a
-                  href="https://www.linkedin.com/in/sumit-rastogi-aaa710224/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-slate-400 hover:text-emerald-400 transition-colors text-sm inline-flex items-center gap-2"
-                >
-                  <Linkedin className="w-4 h-4" />
-                  LinkedIn
-                </a>
-              </li>
-              <li>
-                {/* Updated — replace with domain email once bought */}
-                <a
-                  href="mailto:sumit@finesseaccounts.com"
+                  href="mailto:info@finesseaccounts.com"
                   className="text-slate-400 hover:text-emerald-400 transition-colors text-sm inline-flex items-center gap-2"
                 >
                   <Mail className="w-4 h-4" />
-                  sumit@finesseaccounts.com
+                  info@finesseaccounts.com
                 </a>
               </li>
             </ul>

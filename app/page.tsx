@@ -11,8 +11,6 @@ import {
   BookOpen,
   ChartBar as BarChart3,
   CircleCheck as CheckCircle2,
-  Instagram,
-  Linkedin,
   ChartPie as PieChart,
   RefreshCw,
   FileText,
@@ -330,19 +328,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SOCIAL */}
+      {/* PROFESSIONAL CONTACT */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-900/50">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-6 text-slate-900 dark:text-white">Stay Updated on Tax Tips &amp; Strategies</h2>
-          <p className="text-lg text-slate-600 dark:text-slate-400 mb-12 max-w-2xl mx-auto">Follow us on social media for regular tax insights, business accounting tips, and financial updates tailored for US small business owners.</p>
-          <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 px-8 py-4 bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-emerald-500 transition-colors group">
-              <Instagram className="w-6 h-6 text-slate-700 dark:text-slate-300 group-hover:text-emerald-600 transition-colors" />
-              <span className="font-semibold text-slate-900 dark:text-white">Follow on Instagram</span>
-            </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 px-8 py-4 bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-emerald-500 transition-colors group">
-              <Linkedin className="w-6 h-6 text-slate-700 dark:text-slate-300 group-hover:text-emerald-600 transition-colors" />
-              <span className="font-semibold text-slate-900 dark:text-white">Connect on LinkedIn</span>
+          <h2 className="text-4xl sm:text-5xl font-bold mb-6 text-slate-900 dark:text-white">Ready to Partner With Us?</h2>
+          <p className="text-lg text-slate-600 dark:text-slate-400 mb-12 max-w-2xl mx-auto">Contact Finesse Accounts directly to discuss how we can support your firm's bookkeeping and tax compliance needs.</p>
+          <div className="inline-flex items-center gap-3 px-8 py-4 bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800">
+            <span className="text-slate-600 dark:text-slate-400">Email us at</span>
+            <a href="mailto:info@finesseaccounts.com" className="font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors">
+              info@finesseaccounts.com
             </a>
           </div>
         </div>
@@ -371,7 +365,7 @@ export default function Home() {
             <CardContent className="p-8">
               {submitSuccess && (
                 <div className="mb-6 p-4 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 rounded-lg text-emerald-700 dark:text-emerald-300 font-medium">
-                  Success! We&apos;ve received your inquiry and will get back to you within 24 hours.
+                  Success! We&apos;ve received your inquiry. Our team will contact you at the provided email within 24 hours. Thank you for choosing Finesse Accounts.
                 </div>
               )}
               {submitError && (
