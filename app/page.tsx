@@ -88,10 +88,10 @@ export default function Home() {
     setSubmitSuccess(false);
 
     try {
-      // 1. Save to Supabase (Database) - FIXED TO MATCH YOUR BLUEPRINT
+      // 1. Save to Supabase (Database)
       const { error: dbError } = await supabase.from('leads').insert([
         {
-          name: formData.name, // Fixed: removed 'full_name'
+          name: formData.name,
           email: formData.email,
           phone: formData.phone || 'N/A',
           business_name: formData.business_name || 'N/A',
@@ -103,12 +103,19 @@ export default function Home() {
 
       if (dbError) throw dbError;
 
-      // 2. Trigger Email Notification (Instant Alert to info@finesseaccounts.com)
-      await fetch('/app/api/send', {
+      // 2. Trigger Email Notification (FIXED PATH)
+      // We use /api/send because Vercel maps this automatically to your route.ts
+      const emailRes = await fetch('/api/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
+
+      if (!emailRes.ok) {
+        const errorData = await emailRes.json();
+        console.error('Email error:', errorData);
+        // We don't "throw" here because the data is already saved in Supabase
+      }
 
       setSubmitSuccess(true);
       setFormData({
