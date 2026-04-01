@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     const { data, error } = await resend.emails.send({
       from: 'Finesse Accounts <info@finesseaccounts.com>',
       to: ['info@finesseaccounts.com'],
-      subject: `New Lead: ${business_name} - ${service_interest}`,
+      subject: `New Lead: ${business_name || 'General Inquiry'} - ${service_interest || 'Bookkeeping'}`,
       html: `
         <div style="font-family: sans-serif; padding: 20px; color: #334155;">
           <h2 style="color: #059669;">New Professional Inquiry</h2>
