@@ -1,11 +1,11 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
+import { Button } from '../components/ui/button';
+import { Card, CardContent } from '../components/ui/card';
+import { Input } from '../components/ui/input';
+import { Textarea } from '../components/ui/textarea';
+import { Header } from '../components/Header';
+import { Footer } from '../components/Footer';
 import {
   ArrowRight,
   BookOpen,
@@ -20,7 +20,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '../lib/supabase';
 
 export default function Home() {
   const [formData, setFormData] = useState({
@@ -433,7 +433,7 @@ export default function Home() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-900 dark:text-white mb-2">Service of Interest</label>
-                  <select name="service_interest" value={formData.service_interest} onChange={handleInputChange} className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none transition">
+                  <select name="service_interest" value={formData.service_interest} onChange={handleInputChange} className="w-full px-4 py-2 border border-slate-300 dark:border-slate.700 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none transition">
                     <option value="">Select a service...</option>
                     <option value="whitelabel">White-Label Bookkeeping for CPA Firms</option>
                     <option value="bookkeeping">End-to-End Bookkeeping</option>
