@@ -88,7 +88,7 @@ export default function Home() {
     setSubmitSuccess(false);
 
     try {
-      // 1. Save to Supabase (Database)
+      // 1. Save to Supabase
       const { error: dbError } = await supabase.from('leads').insert([
         {
           name: formData.name,
@@ -103,7 +103,7 @@ export default function Home() {
 
       if (dbError) throw dbError;
 
-      // 2. Trigger Email Notification (Internal API call)
+      // 2. Trigger Email Notification
       const emailRes = await fetch('/api/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
