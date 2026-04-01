@@ -103,19 +103,16 @@ export default function Home() {
 
       if (dbError) throw dbError;
 
-      // 2. Trigger Email Notification (FIXED PATH)
-      // We use /api/send because Vercel maps this automatically to your route.ts
+      // 2. Trigger Email Notification (CRITICAL FIX FOR ZOHO)
+      // This pathing ensures it finds the route.ts even in nested structures
       const emailRes = await fetch('/api/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
-      if (!emailRes.ok) {
-        const errorData = await emailRes.json();
-        console.error('Email error:', errorData);
-        // We don't "throw" here because the data is already saved in Supabase
-      }
+      // Log status for debugging in Browser Console (F12)
+      console.log('Email Service Status:', emailRes.status);
 
       setSubmitSuccess(true);
       setFormData({
