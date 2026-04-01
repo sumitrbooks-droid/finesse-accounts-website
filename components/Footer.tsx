@@ -1,5 +1,5 @@
 'use client';
-import { Scale, Mail } from 'lucide-react';
+import { Scale, Mail, Linkedin } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -15,14 +15,19 @@ export function Footer() {
               </div>
               <span className="font-bold text-white">Finesse Accounts</span>
             </div>
-            {/* Updated description — targets CPA firms */}
-            <p className="text-slate-400 text-sm leading-relaxed mb-3">
+            {/* Professional Description */}
+            <p className="text-slate-400 text-sm leading-relaxed mb-4">
               White-label bookkeeping and tax services for US CPA firms. Clean books delivered overnight — your brand, our work.
             </p>
-            {/* EA credential line */}
-            <p className="text-emerald-400 text-xs font-medium">
-              Operated by Sumit Rastogi | Enrolled Agent (EA Parts 1 & 3)
-            </p>
+            {/* Professional Leadership Line */}
+            <div className="space-y-1">
+              <p className="text-emerald-400 text-xs font-semibold tracking-wide uppercase">
+                Sumit Rastogi | Managing Partner
+              </p>
+              <p className="text-slate-500 text-[10px] uppercase tracking-widest font-medium">
+                Enrolled Agent (EA Parts 1 & 3)
+              </p>
+            </div>
           </div>
 
           {/* Services */}
@@ -48,10 +53,10 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Quick Links */}
+          {/* Contact & Socials */}
           <div>
             <h4 className="font-semibold mb-4 text-white">Get in Touch</h4>
-            <ul className="space-y-2">
+            <ul className="space-y-4">
               <li>
                 <a
                   href="mailto:info@finesseaccounts.com"
@@ -61,6 +66,17 @@ export function Footer() {
                   info@finesseaccounts.com
                 </a>
               </li>
+              <li>
+                <a
+                  href="https://www.linkedin.com/in/sumit-rastogi-aaa710224/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-400 hover:text-emerald-400 transition-colors text-sm inline-flex items-center gap-2"
+                >
+                  <Linkedin className="w-4 h-4" />
+                  Connect on LinkedIn
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -68,10 +84,10 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
-          <p className="text-slate-400 text-sm mb-4 sm:mb-0">
+          <p className="text-slate-500 text-xs mb-4 sm:mb-0">
             © 2026 Finesse Accounts. All rights reserved.
           </p>
-          <div className="flex gap-6 text-sm text-slate-400">
+          <div className="flex gap-6 text-xs text-slate-500">
             <a href="#" className="hover:text-emerald-400 transition-colors">
               Privacy Policy
             </a>
