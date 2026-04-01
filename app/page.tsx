@@ -104,7 +104,7 @@ export default function Home() {
       if (dbError) throw dbError;
 
       // 2. Trigger Email Notification (Instant Alert to info@finesseaccounts.com)
-      await fetch('/api/send', {
+      await fetch('/app/api/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
