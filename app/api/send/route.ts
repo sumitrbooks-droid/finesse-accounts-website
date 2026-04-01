@@ -9,8 +9,8 @@ export async function POST(req: Request) {
     const { name, email, phone, business_name, message, service_interest, client_type } = body;
 
     const data = await resend.emails.send({
-      // This sends a professional alert to your new Zoho Mail
-      from: 'Finesse Accounts <onboarding@resend.dev>', 
+      // UPDATED: Now sending from your verified professional domain
+      from: 'Finesse Accounts <info@finesseaccounts.com>', 
       to: ['info@finesseaccounts.com'],
       subject: `New Lead: ${business_name} - ${service_interest}`,
       html: `
