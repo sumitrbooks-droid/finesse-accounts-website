@@ -88,9 +88,10 @@ export default function Home() {
     setSubmitSuccess(false);
 
     try {
-      // 1. Save to Supabase (Database)
-      const { error: dbError } = await supabase.from('leads').insert([
-        {
+      // 1. Save to Supabase
+      const { error: dbError } = await supabase
+        .from('leads')
+        .insert([{
           name: formData.name,
           email: formData.email,
           phone: formData.phone || 'N/A',
@@ -98,21 +99,29 @@ export default function Home() {
           message: formData.message || 'N/A',
           client_type: formData.client_type || 'N/A',
           service_interest: formData.service_interest || 'N/A'
-        },
-      ]);
+        }]);
 
-      if (dbError) throw dbError;
+      if (dbError) {
+        console.error('Supabase error:', dbError);
+        throw dbError;
+      }
 
-      // 2. Trigger Email Notification (CRITICAL FIX FOR ZOHO)
-      // This pathing ensures it finds the route.ts even in nested structures
+      console.log('Supabase insert successful');
+
+      // 2. Send Email via Resend
       const emailRes = await fetch('/api/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
-      // Log status for debugging in Browser Console (F12)
-      console.log('Email Service Status:', emailRes.status);
+      const emailData = await emailRes.json();
+      console.log('Email response status:', emailRes.status);
+      console.log('Email response data:', emailData);
+
+      if (!emailRes.ok) {
+        console.error('Email failed:', emailData);
+      }
 
       setSubmitSuccess(true);
       setFormData({
@@ -126,8 +135,12 @@ export default function Home() {
       });
 
       setTimeout(() => setSubmitSuccess(false), 8000);
+
     } catch (err) {
-      setSubmitError(err instanceof Error ? err.message : 'Failed to submit form');
+      console.error('Form submission error:', err);
+      setSubmitError(
+        err instanceof Error ? err.message : 'Failed to submit form'
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -142,7 +155,7 @@ export default function Home() {
         <div className="max-w-5xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 text-sm font-medium px-4 py-2 rounded-full mb-8 border border-emerald-200 dark:border-emerald-800">
             <Star className="w-4 h-4" />
-            Enrolled Agent — Managing Partner
+            Enrolled Agent — EA Parts 1 & 3 Cleared
           </div>
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 text-slate-900 dark:text-white leading-tight">
             White-Label Bookkeeping
@@ -164,7 +177,7 @@ export default function Home() {
               onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
               className="bg-emerald-600 hover:bg-emerald-700 text-white border-0 text-lg px-8 py-6 group"
             >
-              Partner With Us
+              Get Started Today
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>
             <Button
@@ -214,17 +227,17 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold mb-6 text-slate-900 dark:text-white">
-              Behind the Expertise
+              Who Is Behind Finesse Accounts?
             </h2>
             <p className="text-lg text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
-              Finesse Accounts is led by <strong className="text-slate-900 dark:text-white">Sumit Rastogi</strong>, a Managing Partner with a deep focus on the US accounting landscape. With 1.8 years of hands-on experience and Enrolled Agent credentials (EA Parts 1 & 3 cleared), we specialize in providing silent, high-accuracy support to growing CPA firms.
+              Finesse Accounts is run by <strong className="text-slate-900 dark:text-white">Sumit Rastogi</strong>, a US-focused bookkeeper with 1.8 years of hands-on experience in US accounting. An Enrolled Agent (EA Parts 1 & 3 cleared, Part 2 — July 2026), Sumit works as a white-label bookkeeper for US CPA firms — handling reconciliations, monthly bookkeeping, and financial reporting overnight so your firm stays ahead without expanding payroll.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { icon: CheckCircle2, title: '1.8 Years US Experience', desc: 'Expertise in US GAAP and standard accounting practices' },
-              { icon: Star, title: 'EA Certified Support', desc: 'Federally licensed tax professional credentials' },
-              { icon: Shield, title: 'Total Privacy Guarantee', desc: 'Strict white-label compliance — your firm stays the hero' },
+              { icon: CheckCircle2, title: '1.8 Years US Bookkeeping Experience', desc: 'Hands-on expertise in US accounting practices and standards' },
+              { icon: Star, title: 'Enrolled Agent — EA Parts 1 & 3', desc: 'Pursuing Part 2 in July 2026. Federally licensed tax professional' },
+              { icon: Shield, title: 'White-Label — Your Brand, Always', desc: 'We work behind the scenes — your firm stays the hero' },
             ].map(({ icon: Icon, title, desc }) => (
               <div key={title} className="flex flex-col items-center text-center p-6 rounded-xl border-t-4 border-emerald-500 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 shadow-sm hover:shadow-md transition-shadow">
                 <div className="w-12 h-12 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center mb-4">
@@ -243,14 +256,14 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-slate-900 dark:text-white">How It Works</h2>
-            <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">Seamless integration with your existing workflow.</p>
+            <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">Simple, seamless, and completely behind the scenes.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { step: '01', title: 'Connect', desc: "Securely share your client's QB/Xero access" },
-              { step: '02', title: 'Overnight Processing', desc: 'Reconciliations done while your local team rests' },
-              { step: '03', title: 'Review & Approve', desc: 'Verify the clean financials under your firm name' },
-              { step: '04', title: 'Deliver', desc: "Clients receive professional reports from YOU" },
+              { step: '01', title: 'Connect', desc: "Share your client's QuickBooks or Xero access securely" },
+              { step: '02', title: 'We Work Overnight', desc: 'Reconciliations, categorization, and reporting done while you sleep' },
+              { step: '03', title: 'Review & Approve', desc: 'You review the clean financials under your brand' },
+              { step: '04', title: 'Deliver to Client', desc: "Your client receives professional reports — they never know we exist" },
             ].map(({ step, title, desc }) => (
               <div key={step} className="flex flex-col items-center text-center p-6 bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
                 <div className="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-lg mb-4">{step}</div>
@@ -267,7 +280,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-slate-900 dark:text-white">Bookkeeping Services</h2>
-            <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">Comprehensive accounting solutions designed for professional scale.</p>
+            <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">Comprehensive accounting solutions designed for US CPA firms and small businesses.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {bookkeepingServices.map((service, index) => (
@@ -278,7 +291,7 @@ export default function Home() {
                       <service.icon className={`w-7 h-7 ${service.highlight ? 'text-white' : 'text-emerald-600 dark:text-emerald-400'}`} />
                     </div>
                     <div>
-                      {service.highlight && (<span className="inline-block bg-emerald-600 text-white text-xs font-semibold px-3 py-1 rounded-full mb-3">★ Core Competency</span>)}
+                      {service.highlight && (<span className="inline-block bg-emerald-600 text-white text-xs font-semibold px-3 py-1 rounded-full mb-3">★ Featured Service</span>)}
                       <h3 className="text-2xl font-bold mb-3 text-slate-900 dark:text-white">{service.title}</h3>
                       <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{service.description}</p>
                     </div>
@@ -294,8 +307,8 @@ export default function Home() {
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-900/50">
         <div className="max-w-3xl mx-auto text-center">
           <FileText className="w-12 h-12 text-emerald-600 dark:text-emerald-400 mx-auto mb-4" />
-          <h2 className="text-3xl font-bold mb-4 text-slate-900 dark:text-white">Review Our Quality</h2>
-          <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">See the standard of reporting your clients will receive. Request our sample management report today.</p>
+          <h2 className="text-3xl font-bold mb-4 text-slate-900 dark:text-white">See the Quality of Our Work</h2>
+          <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">We prepared a sample management report for a US restaurant client — the same quality your CPA firm's clients will receive.</p>
           <Button size="lg" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="bg-emerald-600 hover:bg-emerald-700 text-white border-0 text-lg px-8 py-6 group">
             Request Sample Report
             <ChevronRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -309,15 +322,15 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <div className="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 mb-8 text-sm text-slate-600 dark:text-slate-400">
-                Tax compliance support provided by EA-qualified specialists. Parts 1 & 3 Cleared.
+                Tax advisory services are provided in consultation with the client. Enrolled Agent credential in progress — EA Parts 1 & 3 cleared, Part 2 July 2026.
               </div>
               <h2 className="text-4xl sm:text-5xl font-bold mb-6 text-slate-900 dark:text-white">US Tax Compliance</h2>
-              <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">From Individual Form 1040 preparation to federal filing support, we provide precise compliance to safeguard your client&apos;s standing.</p>
+              <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">Specializing in individual income tax preparation and federal tax filings, we ensure your business stays compliant while minimizing your tax liability.</p>
               <div className="space-y-4">
                 {[
-                  { icon: FileText, title: 'Form 1040 Preparation', desc: 'Expert individual income tax filings with optimized deductions.' },
-                  { icon: BarChart3, title: 'Federal Filings', desc: 'Timely and accurate submission of federal documentation.' },
-                  { icon: CheckCircle2, title: 'Strategic Planning', desc: 'Year-round planning to minimize overall tax liability.' },
+                  { icon: FileText, title: 'Form 1040 Preparation', desc: 'Expert filing of individual income tax returns with maximum deductions and credits.' },
+                  { icon: BarChart3, title: 'Federal Tax Filings', desc: 'Timely submission of all required federal tax forms and documentation.' },
+                  { icon: CheckCircle2, title: 'Tax Strategy & Planning', desc: 'Proactive planning to reduce your overall tax burden year-over-year.' },
                 ].map(({ icon: Icon, title, desc }) => (
                   <div key={title} className="flex items-start gap-4">
                     <Icon className="w-6 h-6 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-1" />
@@ -332,35 +345,37 @@ export default function Home() {
             <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-950/30 dark:to-emerald-900/30 rounded-2xl p-12 border border-emerald-200 dark:border-emerald-800">
               <div className="text-center">
                 <FileText className="w-16 h-16 text-emerald-600 dark:text-emerald-400 mx-auto mb-4" />
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Compliance Focused</h3>
-                <p className="text-slate-600 dark:text-slate-400">Scalable tax support so you can handle more clients without the overhead.</p>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Tax Compliance Made Simple</h3>
+                <p className="text-slate-600 dark:text-slate-400">Let us handle the complexity of US tax requirements while you focus on your business.</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CONTACT CTA */}
+      {/* SOCIAL */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-900/50">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-6 text-slate-900 dark:text-white">Partner with Finesse Accounts</h2>
-          <p className="text-lg text-slate-600 dark:text-slate-400 mb-12 max-w-2xl mx-auto">Speak directly with a Managing Partner about your firm’s goals.</p>
-          <div className="inline-flex items-center gap-3 px-8 py-4 bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800">
-            <span className="text-slate-600 dark:text-slate-400">Primary Inquiry:</span>
-            <a href="mailto:info@finesseaccounts.com" className="font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors">
-              info@finesseaccounts.com
+          <h2 className="text-4xl sm:text-5xl font-bold mb-6 text-slate-900 dark:text-white">Stay Updated on Tax Tips & Strategies</h2>
+          <p className="text-lg text-slate-600 dark:text-slate-400 mb-12 max-w-2xl mx-auto">Follow us on social media for regular tax insights, business accounting tips, and financial updates tailored for US small business owners.</p>
+          <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 px-8 py-4 bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-emerald-500 transition-colors group">
+              <span className="font-semibold text-slate-900 dark:text-white">Follow on Instagram</span>
+            </a>
+            <a href="https://www.linkedin.com/in/sumit-rastogi-aaa710224/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 px-8 py-4 bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-emerald-500 transition-colors group">
+              <span className="font-semibold text-slate-900 dark:text-white">Connect on LinkedIn</span>
             </a>
           </div>
         </div>
       </section>
 
-      {/* FOOTER CTA */}
+      {/* CTA */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-emerald-600 to-emerald-700">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-6 text-white">Elevate Your Firm&apos;s Output</h2>
-          <p className="text-lg text-emerald-50 mb-8 leading-relaxed">Secure, overnight bookkeeping under your brand. Let&apos;s grow together.</p>
+          <h2 className="text-4xl sm:text-5xl font-bold mb-6 text-white">Ready to Simplify Your Accounting?</h2>
+          <p className="text-lg text-emerald-50 mb-8 leading-relaxed">Let's discuss how Finesse Accounts can help your firm stay ahead — clean books, delivered overnight, under your brand.</p>
           <Button size="lg" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="bg-white text-emerald-600 hover:bg-emerald-50 border-0 text-lg px-8 py-6 group">
-            Schedule a Consultation
+            Get in Touch
             <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </Button>
         </div>
@@ -370,14 +385,14 @@ export default function Home() {
       <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4 text-slate-900 dark:text-white">Secure Inquiry</h2>
-            <p className="text-lg text-slate-600 dark:text-slate-400">Enter your firm details below. A Managing Partner will respond within 24 business hours.</p>
+            <h2 className="text-4xl font-bold mb-4 text-slate-900 dark:text-white">Let's Work Together</h2>
+            <p className="text-lg text-slate-600 dark:text-slate-400">Tell us about your firm and we'll get back to you within 24 hours.</p>
           </div>
           <Card className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
             <CardContent className="p-8">
               {submitSuccess && (
                 <div className="mb-6 p-4 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 rounded-lg text-emerald-700 dark:text-emerald-300 font-medium text-sm">
-                  Success! Your inquiry has been prioritized. Our team will contact you at your provided email shortly. Thank you for choosing Finesse Accounts.
+                  Thank you! Your inquiry has been received. We will be in touch within 24 hours.
                 </div>
               )}
               {submitError && (
@@ -392,22 +407,22 @@ export default function Home() {
                     <Input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="John Doe" required className="w-full" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-900 dark:text-white mb-2">Work Email</label>
-                    <Input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="john@firm.com" required className="w-full" />
+                    <label className="block text-sm font-medium text-slate-900 dark:text-white mb-2">Email Address</label>
+                    <Input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="john@example.com" required className="w-full" />
                   </div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-slate-900 dark:text-white mb-2">Phone</label>
+                    <label className="block text-sm font-medium text-slate-900 dark:text-white mb-2">Phone Number</label>
                     <Input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} placeholder="(555) 123-4567" className="w-full" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-900 dark:text-white mb-2">Firm/Business Name</label>
-                    <Input type="text" name="business_name" value={formData.business_name} onChange={handleInputChange} placeholder="Acme CPA Group" className="w-full" />
+                    <label className="block text-sm font-medium text-slate-900 dark:text-white mb-2">Business Name</label>
+                    <Input type="text" name="business_name" value={formData.business_name} onChange={handleInputChange} placeholder="Your Business LLC" className="w-full" />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-900 dark:text-white mb-2">Client Profile</label>
+                  <label className="block text-sm font-medium text-slate-900 dark:text-white mb-2">You Are A...</label>
                   <select name="client_type" value={formData.client_type} onChange={handleInputChange} className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none transition">
                     <option value="">Select one...</option>
                     <option value="cpa_firm">CPA Firm Owner</option>
@@ -417,30 +432,26 @@ export default function Home() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-900 dark:text-white mb-2">Service Portfolio</label>
+                  <label className="block text-sm font-medium text-slate-900 dark:text-white mb-2">Service of Interest</label>
                   <select name="service_interest" value={formData.service_interest} onChange={handleInputChange} className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 outline-none transition">
                     <option value="">Select a service...</option>
-                    <option value="whitelabel">White-Label Bookkeeping</option>
+                    <option value="whitelabel">White-Label Bookkeeping for CPA Firms</option>
                     <option value="bookkeeping">End-to-End Bookkeeping</option>
                     <option value="reconciliation">Bank Reconciliation</option>
                     <option value="cleanup">Clean-up Services</option>
                     <option value="tax">Tax Services</option>
                     <option value="sample">Request Sample Report</option>
-                    <option value="other">Consultation</option>
+                    <option value="other">Other / Consultation</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-900 dark:text-white mb-2">Message</label>
-                  <Textarea name="message" value={formData.message} onChange={handleInputChange} placeholder="Outline your specific bookkeeping or tax needs..." rows={5} className="w-full" />
+                  <Textarea name="message" value={formData.message} onChange={handleInputChange} placeholder="Tell us about your firm and bookkeeping needs..." rows={5} className="w-full" />
                 </div>
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-400 text-white border-0 py-3 text-lg font-medium transition-colors"
-                >
-                  {isSubmitting ? 'Processing...' : 'Submit Professional Inquiry'}
+                <Button type="submit" disabled={isSubmitting} className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-400 text-white border-0 py-3 text-lg font-medium transition-colors">
+                  {isSubmitting ? 'Submitting...' : 'Submit Inquiry'}
                 </Button>
-                <p className="text-xs text-slate-600 dark:text-slate-400 text-center">Finesse Accounts strictly adheres to data privacy standards. Your inquiry is secure.</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400 text-center">We respect your privacy. Your information is secure and will only be used to contact you about our services.</p>
               </form>
             </CardContent>
           </Card>
