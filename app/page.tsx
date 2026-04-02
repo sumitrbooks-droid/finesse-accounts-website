@@ -116,7 +116,7 @@ export default function Home() {
           Accept: 'application/json'
         },
         body: JSON.stringify({
-          access_key: '36d14057-63ca-4e23-add3-d4b8a775d313',
+          access_key: '18279ab9-ad9e-4e9d-873e-941e7bab106f',
           subject: `New Lead: ${formData.business_name || formData.name}`,
           from_name: 'Finesse Accounts Website',
           name: formData.name,
